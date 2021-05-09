@@ -1,21 +1,25 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+import Login from './Login';
+import Menu from './Menu';
+import AddExpense from './AddExpense';
+import listTrip from './listTrip';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+/*Navigator page to change screens*/
+const navigator = (createStackNavigator(
+  {
+    One: Login,
+    Two: Menu,
+    Three: AddExpense,
+    Four: listTrip
   },
-});
+  {
+    initialRouteName: 'One',
+    defaultNavigationOptions: {
+      title: 'Splittr',
+    },
+  }
+));
+
+export default createAppContainer(navigator);
