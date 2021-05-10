@@ -1,36 +1,79 @@
-import React, { useState } from 'react';
+import React, { useState, Component } from 'react';
+import { render } from 'react-dom';
 import { StyleSheet, TextInput, View, Button } from 'react-native';
 
 export default function listTrip({ navigation }) {
 
+    // class table extends Component() {
+
+    // }
     const [trip, setTrip] = useState("");
-    const [obj, setObj] = useState([]);
+    const [obj, setObj] = useState({});
+    var body;
 
     function mountList(obj) {
-        obj[0].amount
-        obj[0].label
+        body = document.body
+        var tbl = document.createElement('table');
+        body.style.verticalAlign = 'sub';
+        tbl.style.width = '500px';
+        tbl.style.border = '1px solid black';
+        tbl.style.verticalAlign = 'sub';
+        tbl.style.display = 'block';
+
+        var th = tbl.insertRow();
+        var hd = th.insertCell();
+        hd.appendChild(document.createTextNode("Name"))
+        hd = th.insertCell();
+        hd.appendChild(document.createTextNode("Amount"))
+        hd = th.insertCell();
+        hd.appendChild(document.createTextNode("Description"))
+
+        for (var i = 0; i < obj.length; i++) {
+            var tr = tbl.insertRow();
+            var td = tr.insertCell();
+            td.appendChild(document.createTextNode(obj[i].name));
+            td.style.border = '1px solid black';
+            var td = tr.insertCell();
+            td.appendChild(document.createTextNode(obj[i].amount.toString()));
+            td.style.border = '1px solid black';
+            var td = tr.insertCell();
+            td.appendChild(document.createTextNode(obj[i].label));
+            td.style.border = '1px solid black';
+        }
+        body.appendChild(tbl);
     }
+
+
+    // for (let i = 0; i < obj.length; i++) {
+    //     console.log(obj[i].name + " " + obj[i].amount + " " + obj[i].label);
+    //     table =
+    //         <table>
+    //             <tr>
+    //                 <td>{obj[i].name}</td>
+    //                 <td>{obj[i].amount}</td>
+    //                 <td>{obj[i].label}</td>
+    //             </tr>
+    //         </table>
+    // }
+    //ReactDOM.render(table);
 
     function getTrip() {
         console.log("function called")
-        // var myHeaders = new Headers();
-        // myHeaders.append("Content-Type", "application/json");
-        // myHeaders.append("Authorization", "Bearer " + token);
 
         var requestOptions = {
             method: 'GET',
-            redirect: 'follow',
-            // Headers: myHeaders
+            redirect: 'follow'
         };
 
-        fetch("http://localhost:8080/rio", requestOptions)
-            .then(response => response.json())
-            .then((data) => {
-                setObj(data);
-                console.log(data);
-                console.log("Amount: " + data[0].amount);
-                console.log(data[0].label);
-            });
+        {
+            fetch("http://localhost:8080/rio", requestOptions)
+                .then(response => response.json())
+                .then((data) => {
+                    setObj(data);
+                    console.log("length is: " + data.length);
+                    mountList(data);
+                });
+        }
     }
 
     return (
