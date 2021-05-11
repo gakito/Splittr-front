@@ -1,16 +1,13 @@
 import React, { useState, Component } from 'react';
-import { render } from 'react-dom';
-import { StyleSheet, TextInput, View, Button } from 'react-native';
+import { StyleSheet, TextInput, View, Button, FlatList } from 'react-native';
 
 export default function listTrip({ navigation }) {
 
-    // class table extends Component() {
-
-    // }
     const [trip, setTrip] = useState("");
     const [obj, setObj] = useState({});
     var body;
 
+    //returning list
     function mountList(obj) {
         body = document.body
         var tbl = document.createElement('table');
@@ -43,20 +40,7 @@ export default function listTrip({ navigation }) {
         body.appendChild(tbl);
     }
 
-
-    // for (let i = 0; i < obj.length; i++) {
-    //     console.log(obj[i].name + " " + obj[i].amount + " " + obj[i].label);
-    //     table =
-    //         <table>
-    //             <tr>
-    //                 <td>{obj[i].name}</td>
-    //                 <td>{obj[i].amount}</td>
-    //                 <td>{obj[i].label}</td>
-    //             </tr>
-    //         </table>
-    // }
-    //ReactDOM.render(table);
-
+    //getting data from server
     function getTrip() {
         console.log("function called")
 
@@ -71,10 +55,12 @@ export default function listTrip({ navigation }) {
                 .then((data) => {
                     setObj(data);
                     console.log("length is: " + data.length);
-                    mountList(data);
+                    //mountList(data);
                 });
         }
     }
+
+
 
     return (
         <View style={styles.container}>
@@ -93,7 +79,16 @@ export default function listTrip({ navigation }) {
                     title="Get your report"
                 />
             </View>
+            <FlatList
+                data={obj}
+                renderItem={({ item }) => (
+                    <View key={item.name}>
+                        <Text>{item.name + " " + item.label}</Text>
+                    </View>
+                )}
+            />
         </View>
+
 
 
     )
