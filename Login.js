@@ -33,7 +33,8 @@ export default function Login({ navigation }) {
                 borderColor: 'blue',
                 borderWidth: 1,
                 width: "30%",
-                padding: "4px"
+                padding: "4px",
+                margin: "1%"
             }}
                 onChangeText={setUsername}
                 placeholder="username"
@@ -43,13 +44,14 @@ export default function Login({ navigation }) {
                 borderColor: 'blue',
                 borderWidth: 1,
                 width: "30%",
-                padding: "4px"
+                padding: "4px",
+                marginBottom: "3%"
             }}
                 placeholder="password"
                 secureTextEntry={true}
                 onChangeText={setPassword}
             />
-            <View style={{ width: "30%" }}>
+            <View style={{ width: "30%", margin: "1%" }}>
                 <Button
                     onPress={() => {
                         login();

@@ -39,7 +39,6 @@ export default function AddExpense({ navigation }) {
             .catch((error) => {
                 console.error('Error:', error);
             });
-
     }
 
     return (
