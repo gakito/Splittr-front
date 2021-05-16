@@ -1,11 +1,32 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View, Button, FlatList, ScrollView, Text } from 'react-native';
+import { StyleSheet, TextInput, View, Button, FlatList, Text } from 'react-native';
 
 
 export default function listTrip({ navigation }) {
 
     const [trip, setTrip] = useState("");
     const [expenseList, setExpenseList] = useState([{ name: '', amount: '', label: '' }]);
+
+    //closing a trip so no more expenses can be added 
+    function closing() {
+        var requestOptions = {
+            method: 'POST',
+            redirect: 'follow'
+        };
+
+        fetch("http://localhost:8080/" + (trip.trim().toLowerCase()) + "/close", requestOptions)
+            .then(response => response.text())
+            .then(data => {
+                if (data == "true") {
+                    setUserMessage("Trip closed successfully!")
+                } else {
+                    setUserMessage("This trip was not found. Please try again.")
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
 
     //getting data from server
     function getTrip() {
@@ -17,7 +38,7 @@ export default function listTrip({ navigation }) {
         };
 
         {
-            fetch("http://localhost:8080/rio", requestOptions)
+            fetch("http://localhost:8080/rio"  /*+ (trip.trim().toLowerCase()) */, requestOptions)
                 .then(response => response.json())
                 .then((data) => {
                     console.log(data);
@@ -46,22 +67,41 @@ export default function listTrip({ navigation }) {
                 />
             </View>
 
-            <ScrollView >
+            <View style={{ flexDirection: "row", width: "30%" }} >
                 <FlatList
                     data={expenseList}
+                    ListHeaderComponent={<Text>Name</Text>}
                     renderItem={({ item }) => (
                         <View >
                             <Text>{item.name}</Text>
+                        </View>
+                    )}
+                />
+                <FlatList
+                    data={expenseList}
+                    ListHeaderComponent={<Text>Amount</Text>}
+                    ListHeaderComponentStyle={{ alignItems: 'center' }}
+                    renderItem={({ item }) => (
+                        <View style={{ alignItems: 'center' }}>
                             <Text>{item.amount}</Text>
+                        </View>
+                    )}
+                />
+                <FlatList
+                    data={expenseList}
+                    ListHeaderComponent={<Text>Description</Text>}
+                    ListHeaderComponentStyle={{ alignItems: 'center' }}
+                    renderItem={({ item }) => (
+                        <View style={{ alignItems: 'center' }}>
                             <Text>{item.label}</Text>
                         </View>
                     )}
                 />
-            </ScrollView>
+            </View>
 
             <View style={styles.buttons}>
                 <Button
-                    //onPress={ }
+                    onPress={closing}
                     title="Close trip"
                 />
             </View>

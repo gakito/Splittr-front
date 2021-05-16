@@ -5,6 +5,7 @@ import Login from './Login';
 import Menu from './Menu';
 import AddExpense from './AddExpense';
 import listTrip from './listTrip';
+import closeTrip from './closeTrip';
 
 /*Navigator page to change screens*/
 const navigator = (createStackNavigator(
@@ -12,7 +13,8 @@ const navigator = (createStackNavigator(
     One: Login,
     Two: Menu,
     Three: AddExpense,
-    Four: listTrip
+    Four: listTrip,
+    Five: closeTrip
   },
   {
     initialRouteName: 'One',

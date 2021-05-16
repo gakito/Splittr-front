@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View, Button } from 'react-native';
+import { StyleSheet, TextInput, View, Button, Text } from 'react-native';
 
 
 export default function AddExpense({ navigation }) {
@@ -7,6 +7,7 @@ export default function AddExpense({ navigation }) {
     const [trip, setTrip] = useState("");
     const [amount, setAmount] = useState(0);
     const [label, setLabel] = useState("");
+    const [userMessage, setUserMessage] = useState("");
 
     function expense() {
         console.log("function called");
@@ -32,9 +33,21 @@ export default function AddExpense({ navigation }) {
         };
 
         fetch("http://localhost:8080/" + (trip.trim().toLowerCase()) + "/expense", requestOptions)
-            .then(response => response.json())
+            .then(response => {
+                if (response != null) {
+                    response.json()
+                } else {
+                    alert("Trip closed. Not allowed to add more expenses.")
+                    setUserMessage("Trip closed. Not allowed to add more expenses.")
+                }
+            })
             .then(data => {
-                console.log('Success:', data);
+                if (data != null) {
+                    console.log('Success:', data);
+                } else {
+                    setUserMessage("Trip closed. Not allowed to add more expenses.")
+                    //alert("Trip closed. Not allowed to add more expenses.")
+                }
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -85,6 +98,7 @@ export default function AddExpense({ navigation }) {
                     title="Add Expense"
                 />
             </View>
+            <Text>{userMessage}</Text>
         </View>
     );
 }

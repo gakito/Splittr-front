@@ -1,35 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View, Button, Text } from 'react-native';
+import { StyleSheet, TextInput, View, Button, FlatList, Text } from 'react-native';
 
-
-export default function closeTrip({ navigation }) {
+export default function Summary({ navigation }) {
 
     const [trip, setTrip] = useState("");
-    const [userMessage, setUserMessage] = useState("");
-
-    function closing() {
-        console.log("function called");
-
-        var requestOptions = {
-            method: 'POST',
-            redirect: 'follow'
-        };
-
-        fetch("http://localhost:8080/" + (trip.trim().toLowerCase()) + "/close", requestOptions)
-            .then(response => response.text())
-            .then(data => {
-                if (data == "true") {
-                    setUserMessage("Trip closed successfully!")
-                } else {
-                    setUserMessage("This trip was not found. Please try again.")
-                }
-                console.log(typeof (data))
-                console.log('Success:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-    }
+    //const [userMessage, setUserMessage] = useState("");
 
     function getSummary() {
         console.log("function called");
@@ -43,7 +18,7 @@ export default function closeTrip({ navigation }) {
             .then(response => response.json())
             .then(data => {
                 console.log(data)
-                console.log(data.amilcar)
+                //console.log(data.amilcar)
             })
             .catch(error => console.log('error', error));
     }
@@ -65,21 +40,13 @@ export default function closeTrip({ navigation }) {
             <View style={styles.buttons}>
                 <Button
                     onPress={() => {
-                        closing();
+                        getSummary();
                     }}
-                    title="Close trip"
+                    title="Summary"
                 />
             </View>
             <View>
                 <Text>{userMessage}</Text>
-            </View>
-            <View style={styles.buttons}>
-                <Button
-                    onPress={() => {
-                        getSummary();
-                    }}
-                    title="Get Summary"
-                />
             </View>
         </View>
     );
