@@ -20,6 +20,11 @@ const navigator = (createStackNavigator(
     initialRouteName: 'One',
     defaultNavigationOptions: {
       title: 'Splittr',
+      headerTintColor: '#fdfaf6',
+      headerStyle: {
+        backgroundColor: '#064420',
+      },
+      backgroundColor: '#e4efe7'
     },
   }
 ));

@@ -43,6 +43,7 @@ export default function Summary({ navigation }) {
                         getSummary();
                     }}
                     title="Summary"
+                    color='#064420'
                 />
             </View>
             <View>
@@ -55,7 +56,7 @@ export default function Summary({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#e4efe7',
         alignItems: 'center',
         justifyContent: 'center',
     },

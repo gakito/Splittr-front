@@ -6,6 +6,7 @@ export default function Login({ navigation }) {
 
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
+    const [loginError, setLoginError] = useState("");
 
     var auth;
 
@@ -19,7 +20,14 @@ export default function Login({ navigation }) {
         };
 
         fetch("http://localhost:8080/login?username=" + username + "&password=" + password, requestOptions)
-            .then(response => response.text())
+            .then(response => {
+                if (!response.ok) {
+                    setLoginError("Invalid user or password. Please try again.")
+                } else {
+                    response.text()
+                    navigation.navigate("Two")
+                }
+            })
             .then(token => sessionStorage.setItem("token", token))
             .then(() => sessionStorage.setItem("user", username))
             .catch(error => console.log('error', error));
@@ -52,13 +60,16 @@ export default function Login({ navigation }) {
                 onChangeText={setPassword}
             />
             <View style={{ width: "30%", margin: "1%" }}>
+                <Text style={{ textAlign: 'center' }}
+                >{loginError}</Text>
                 <Button
                     onPress={() => {
                         login();
-                        navigation.navigate("Two");
                     }}
                     title="LOGIN"
-                /></View>
+                    color='#064420'
+                />
+            </View>
         </View >
     );
 }
@@ -66,7 +77,7 @@ export default function Login({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#e4efe7',
         alignItems: 'center',
         justifyContent: 'center',
     },

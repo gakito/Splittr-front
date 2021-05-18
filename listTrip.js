@@ -41,9 +41,7 @@ export default function listTrip({ navigation }) {
             fetch("http://localhost:8080/rio"  /*+ (trip.trim().toLowerCase()) */, requestOptions)
                 .then(response => response.json())
                 .then((data) => {
-                    console.log(data);
                     setExpenseList(data);
-                    console.log(expenseList);
                 });
         }
     }
@@ -64,6 +62,7 @@ export default function listTrip({ navigation }) {
                 <Button
                     onPress={getTrip}
                     title="Get your report"
+                    color='#064420'
                 />
             </View>
 
@@ -103,6 +102,7 @@ export default function listTrip({ navigation }) {
                 <Button
                     onPress={closing}
                     title="Close trip"
+                    color='#064420'
                 />
             </View>
         </View>
@@ -112,7 +112,7 @@ export default function listTrip({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#e4efe7',
         alignItems: 'center',
         justifyContent: 'center'
     },

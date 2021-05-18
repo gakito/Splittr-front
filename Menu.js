@@ -9,18 +9,21 @@ export default function Menu({ navigation }) {
                 <Button
                     onPress={() => { navigation.navigate("Three") }}
                     title="Add expense"
+                    color='#064420'
                 /></View>
 
             <View style={styles.buttons}>
                 <Button
                     onPress={() => { navigation.navigate("Four") }}
                     title="Get a report"
+                    color='#064420'
                 /></View>
 
             <View style={styles.buttons}>
                 <Button
                     onPress={() => { navigation.navigate("Five") }}
-                    title="Close trip"
+                    title="Close trip and Get Summary"
+                    color='#064420'
                 /></View>
         </View >
     );
@@ -29,7 +32,7 @@ export default function Menu({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#e4efe7',
         alignItems: 'center',
         justifyContent: 'center',
     },

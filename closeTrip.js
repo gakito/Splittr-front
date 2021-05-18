@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View, Button, Text } from 'react-native';
+import { StyleSheet, TextInput, View, Button, Text, FlatList } from 'react-native';
 
 
 export default function closeTrip({ navigation }) {
 
     const [trip, setTrip] = useState("");
     const [userMessage, setUserMessage] = useState("");
+    const [costsAmilcar, setCostsAmilcar] = useState(0);
+    const [costsDavid, setCostsDavid] = useState(0);
+    const [costsGreg, setCostsGreg] = useState(0);
+    var total = costsAmilcar + costsDavid + costsGreg;
+
 
     function closing() {
         console.log("function called");
@@ -43,7 +48,9 @@ export default function closeTrip({ navigation }) {
             .then(response => response.json())
             .then(data => {
                 console.log(data)
-                console.log(data.amilcar)
+                setCostsAmilcar(data.amilcar);
+                setCostsDavid(data.david);
+                setCostsGreg(data.greg);
             })
             .catch(error => console.log('error', error));
     }
@@ -68,6 +75,7 @@ export default function closeTrip({ navigation }) {
                         closing();
                     }}
                     title="Close trip"
+                    color='#064420'
                 />
             </View>
             <View>
@@ -79,7 +87,28 @@ export default function closeTrip({ navigation }) {
                         getSummary();
                     }}
                     title="Get Summary"
+                    color='#064420'
                 />
+            </View>
+            <View style={{ alignContent: 'center', flexDirection: 'row', width: "50%", justifyContent: 'space-around' }} >
+                <View style={{ alignContent: 'center' }}>
+                    <Text>User</Text>
+                    <Text>Amilcar</Text>
+                    <Text>David</Text>
+                    <Text>Greg</Text>
+                </View>
+                <View style={{ alignContent: 'center' }}>
+                    <Text>Amount paid (€) </Text>
+                    <Text>{costsAmilcar} </Text>
+                    <Text>{costsDavid} </Text>
+                    <Text>{costsGreg} </Text>
+                </View>
+                <View style={{ alignContent: 'center' }}>
+                    <Text>Amount to pay (€) </Text>
+                    <Text>{(total / 3 - costsAmilcar).toFixed(2)} </Text>
+                    <Text>{(total / 3 - costsDavid).toFixed(2)}</Text>
+                    <Text>{(total / 3 - costsGreg).toFixed(2)} </Text>
+                </View>
             </View>
         </View>
     );
@@ -88,7 +117,7 @@ export default function closeTrip({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#e4efe7',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -96,5 +125,15 @@ const styles = StyleSheet.create({
     buttons: {
         width: "30%",
         margin: "1%"
+    },
+
+    textSummary1: {
+        justifyContent: 'flex-start'
+    },
+    textSummary2: {
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        alignSelf: 'center',
+        textAlign: 'center'
     }
 });

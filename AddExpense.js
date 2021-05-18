@@ -96,6 +96,7 @@ export default function AddExpense({ navigation }) {
                         expense();
                     }}
                     title="Add Expense"
+                    color='#064420'
                 />
             </View>
             <Text>{userMessage}</Text>
@@ -106,7 +107,7 @@ export default function AddExpense({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#e4efe7',
         alignItems: 'center',
         justifyContent: 'center',
     },
