@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TextInput, Text, View, Button } from 'react-native';
+import { StyleSheet, View, Button } from 'react-native';
 
 export default function Menu({ navigation }) {
 

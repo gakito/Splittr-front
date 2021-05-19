@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, Text, View, Button } from 'react-native';
+import { FiUser, FiLock } from 'react-icons/fi'
 
 
 export default function Login({ navigation }) {
@@ -25,41 +26,43 @@ export default function Login({ navigation }) {
                     setLoginError("Invalid user or password. Please try again.")
                 } else {
                     response.text()
+                        .then(token => sessionStorage.setItem("token", token))
+                        .then(() => sessionStorage.setItem("user", username))
+                        .catch(error => console.log('error', error));
                     navigation.navigate("Two")
                 }
             })
-            .then(token => sessionStorage.setItem("token", token))
-            .then(() => sessionStorage.setItem("user", username))
-            .catch(error => console.log('error', error));
+
     }
 
     return (
 
         <View style={styles.container}>
-            <TextInput style={{
-                height: 40,
-                borderColor: 'blue',
-                borderWidth: 1,
-                width: "30%",
-                padding: "4px",
-                margin: "1%"
-            }}
-                onChangeText={setUsername}
-                placeholder="username"
-            />
-            <TextInput style={{
-                height: 40,
-                borderColor: 'blue',
-                borderWidth: 1,
-                width: "30%",
-                padding: "4px",
-                marginBottom: "3%"
-            }}
-                placeholder="password"
-                secureTextEntry={true}
-                onChangeText={setPassword}
-            />
-            <View style={{ width: "30%", margin: "1%" }}>
+            <View style={styles.inputView}>
+                <View style={styles.icon}>
+                    <FiUser
+                        size="22px"
+                    />
+                </View>
+                <TextInput style={styles.textInput}
+                    onChangeText={setUsername}
+                    placeholder="username"
+                />
+            </View>
+            <View style={styles.inputView}>
+                <View style={styles.icon}>
+                    <FiLock
+                        size="22px"
+                    />
+                </View>
+                <TextInput style={styles.textInput}
+                    placeholder="password"
+                    secureTextEntry={true}
+                    onChangeText={setPassword}
+                    enablesReturnKeyAutomatically={true}
+                />
+            </View>
+            <View style={{ width: "32%", margin: "2.5%", alignSelf: 'center' }}>
                 <Text style={{ textAlign: 'center' }}
                 >{loginError}</Text>
                 <Button
@@ -78,7 +81,32 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#e4efe7',
-        alignItems: 'center',
         justifyContent: 'center',
     },
-});
+    textInput: {
+        height: 40,
+        borderColor: '#064420',
+        borderWidth: 1,
+        width: "30%",
+        padding: "4px",
+        backgroundColor: "#fdfaf6",
+    },
+    inputView: {
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        margin: "5px"
+    },
+    icon: {
+        borderWidth: 1,
+        borderRightWidth: 0,
+        padding: 4,
+        height: "40px",
+        width: '40px',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderColor: '#064420',
+        backgroundColor: "#fdfaf6"
+    }
+}
+);

@@ -6,6 +6,7 @@ export default function listTrip({ navigation }) {
 
     const [trip, setTrip] = useState("");
     const [expenseList, setExpenseList] = useState([{ name: '', amount: '', label: '' }]);
+    const [show, setShow] = useState("none");
 
     //closing a trip so no more expenses can be added 
     function closing() {
@@ -41,19 +42,31 @@ export default function listTrip({ navigation }) {
             fetch("http://localhost:8080/rio"  /*+ (trip.trim().toLowerCase()) */, requestOptions)
                 .then(response => response.json())
                 .then((data) => {
+                    if (data) {
+                        setShow("flex");
+                    } else {
+                        setShow("none");
+                    }
                     setExpenseList(data);
+                    console.log(data);
                 });
         }
+    }
+
+    //https://stackoverflow.com/questions/1026069/how-do-i-make-the-first-letter-of-a-string-uppercase-in-javascript
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
     return (
         <View style={styles.container}>
             <TextInput style={{
                 height: 40,
-                borderColor: 'blue',
+                borderColor: '#064420',
                 borderWidth: 1,
                 width: "30%",
-                marginTop: "5%"
+                marginTop: "5%",
+                backgroundColor: "#fdfaf6"
             }}
                 onChangeText={setTrip}
                 placeholder="Trip label"
@@ -66,33 +79,43 @@ export default function listTrip({ navigation }) {
                 />
             </View>
 
-            <View style={{ flexDirection: "row", width: "30%" }} >
+            <View style={{
+                alignContent: 'center',
+                flexDirection: 'row',
+                width: "50%",
+                justifyContent: 'space-around',
+                display: show,
+                backgroundColor: "#faf1e6",
+                borderWidth: 2,
+                borderColor: "#064420"
+            }} >
                 <FlatList
+                    style={styles.tableLeft}
                     data={expenseList}
-                    ListHeaderComponent={<Text>Name</Text>}
+                    ListHeaderComponent={<Text style={styles.tableHeader}>Name</Text>}
                     renderItem={({ item }) => (
                         <View >
-                            <Text>{item.name}</Text>
+                            <Text style={styles.tableBody}>{capitalizeFirstLetter(item.name)}</Text>
                         </View>
                     )}
                 />
                 <FlatList
                     data={expenseList}
-                    ListHeaderComponent={<Text>Amount</Text>}
+                    ListHeaderComponent={<Text style={styles.tableHeader}>Amount</Text>}
                     ListHeaderComponentStyle={{ alignItems: 'center' }}
                     renderItem={({ item }) => (
                         <View style={{ alignItems: 'center' }}>
-                            <Text>{item.amount}</Text>
+                            <Text style={styles.tableBody}>{item.amount}</Text>
                         </View>
                     )}
                 />
                 <FlatList
                     data={expenseList}
-                    ListHeaderComponent={<Text>Description</Text>}
+                    ListHeaderComponent={<Text style={styles.tableHeader}>Description</Text>}
                     ListHeaderComponentStyle={{ alignItems: 'center' }}
                     renderItem={({ item }) => (
                         <View style={{ alignItems: 'center' }}>
-                            <Text>{item.label}</Text>
+                            <Text style={styles.tableBody}>{item.label}</Text>
                         </View>
                     )}
                 />
@@ -119,5 +142,28 @@ const styles = StyleSheet.create({
     buttons: {
         width: "30%",
         margin: "3%"
+    },
+    // tableView: {
+    //     alignContent: 'center',
+    //     flexDirection: 'row',
+    //     width: "50%",
+    //     justifyContent: 'space-around',
+    //     display:show
+    //     backgroundColor: "#faf1e6",
+    //     borderWidth: 2,
+    //     borderColor: "#064420"
+    // },
+    tableHeader: {
+        fontWeight: 'bold',
+        borderBottomWidth: 1,
+        borderColor: "#064420",
+        fontSize: "1.7vw"
+    },
+    tableBody: {
+        fontSize: "1.4vw",
+        fontWeight: '500'
+    },
+    tableLeft: {
+        paddingLeft: '0.8vw'
     }
 });
