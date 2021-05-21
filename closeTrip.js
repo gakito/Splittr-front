@@ -11,6 +11,14 @@ export default function closeTrip({ navigation }) {
     const [costsGreg, setCostsGreg] = useState(0);
     var total = costsAmilcar + costsDavid + costsGreg;
     const [show, setShow] = useState("none");
+    const [max, setMax] = useState();
+    const [maxUser, setMaxUser] = useState();
+    const [maxLabel, setMaxLabel] = useState();
+    const [min, setMin] = useState();
+    const [minUser, setMinUser] = useState();
+    const [minLabel, setMinLabel] = useState();
+    const [maxList, setMaxList] = useState([{ name: '', amount: '', label: '' }]);
+    const [minList, setMinList] = useState([{ name: '', amount: '', label: '' }]);
 
 
 
@@ -40,30 +48,49 @@ export default function closeTrip({ navigation }) {
 
     async function getSummary() {
         console.log("summary function called");
-
+        console.log(total)
         var requestOptions = {
             method: 'GET',
             redirect: 'follow'
         };
 
-        fetch("http://localhost:8080/rio/summary", requestOptions)
-            .then(response => {
-                response.json()
-                //console.log(response.json())
-                // if (response.ok) {
-                //     setShow("flex");
-                // } else {
-                //     setShow("none");
-                //     alert("There is no trip with that name :(")
-                // }
-            })
+        fetch("http://localhost:8080/" + (trip.trim().toLowerCase()) + "/summary", requestOptions)
+            .then(response => response.json())
             .then(data => {
+                if (data) {
+                    setShow("flex");
+                } else {
+                    setShow("none");
+                }
                 console.log(data)
-                setCostsAmilcar(data.amilcar);
-                setCostsDavid(data.david);
-                setCostsGreg(data.greg);
+                if (data.amilcar) {
+                    setCostsAmilcar(data.amilcar);
+                } if (data.david) {
+                    setCostsDavid(data.david);
+                }
+                if (data.greg) {
+                    setCostsGreg(data.greg);
+                }
             })
             .catch(error => console.log('error', error));
+
+
+    }
+
+    function getDetails() {
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+
+        fetch("http://localhost:8080/rio/details", requestOptions)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                console.log(data.max)
+                setMaxList(data.max)
+                setMaxList(data.max[0])
+            })
     }
 
     return (
@@ -74,12 +101,6 @@ export default function closeTrip({ navigation }) {
                 placeholder="Trip label"
             />
             <View style={styles.buttons}>
-                {/* <TouchableOpacity
-                    onPress={() => { closing() }}
-                    style={{ backgroundColor: "#064420", alignItems: "center", paddingVertical: "0.7vw", justifyContent: 'center', alignContent: 'center' }}
-                >
-                    <Text style={{ fontSize: "1.5vw", fontWeight: '500', color: 'white', fontFamily: '' }}>CLOSE TRIP</Text>
-                </TouchableOpacity> */}
                 <Button
                     onPress={() => {
                         closing();
@@ -100,24 +121,43 @@ export default function closeTrip({ navigation }) {
                     color='#064420'
                 />
             </View>
-            <View style={styles.tableView} >
-                <View style={{}}>
+            <View style={styles.buttons}>
+                <Button
+                    onPress={() => {
+                        getDetails();
+                    }}
+                    title="Get Details"
+                    color='#064420'
+                />
+            </View>
+
+            <View style={{
+                alignContent: 'center',
+                flexDirection: 'row',
+                width: "40%",
+                justifyContent: 'space-around',
+                display: show,
+                backgroundColor: "#faf1e6",
+                borderWidth: 2,
+                borderColor: "#064420"
+            }} >
+                <View style={{ marginLeft: 0 }}>
                     <Text style={styles.tableHeader} >User</Text>
-                    <Text style={styles.tableBody}>Amilcar</Text>
-                    <Text style={styles.tableBody}>David</Text>
-                    <Text style={styles.tableBody}>Greg</Text>
+                    <Text>Amilcar</Text>
+                    <Text>David</Text>
+                    <Text>Greg</Text>
                 </View>
                 <View style={{ alignItems: 'center' }}>
                     <Text style={styles.tableHeader}>Amount paid (€) </Text>
-                    <Text style={styles.tableBody}>{costsAmilcar}</Text>
-                    <Text style={styles.tableBody}>{costsDavid}</Text>
-                    <Text style={styles.tableBody}>{costsGreg}</Text>
+                    <Text>{costsAmilcar}</Text>
+                    <Text>{costsDavid}</Text>
+                    <Text>{costsGreg}</Text>
                 </View>
                 <View style={{ alignItems: 'center' }}>
                     <Text style={styles.tableHeader}>Amount to pay (€) </Text>
-                    <Text style={styles.tableBody}>{(total / 3 - costsAmilcar).toFixed(2)}</Text>
-                    <Text style={styles.tableBody}>{(total / 3 - costsDavid).toFixed(2)}</Text>
-                    <Text style={styles.tableBody}>{(total / 3 - costsGreg).toFixed(2)}</Text>
+                    <Text >{(total / 3 - costsAmilcar).toFixed(2)}</Text>
+                    <Text >{(total / 3 - costsDavid).toFixed(2)}</Text>
+                    <Text >{(total / 3 - costsGreg).toFixed(2)}</Text>
                 </View>
             </View>
         </View>
@@ -136,25 +176,10 @@ const styles = StyleSheet.create({
         width: "30%",
         margin: "1%"
     },
-
-    tableView: {
-        alignContent: 'center',
-        flexDirection: 'row',
-        width: "50%",
-        justifyContent: 'space-around',
-        display: 'flex',
-        backgroundColor: "#faf1e6",
-        borderWidth: 2,
-        borderColor: "#064420"
-    },
     tableHeader: {
         fontWeight: 'bold',
         borderBottomWidth: 1,
         borderColor: "#064420",
-        fontSize: "1.7vw"
-    },
-    tableBody: {
-        fontSize: "1.4vw",
     },
     textInput: {
         height: 40,

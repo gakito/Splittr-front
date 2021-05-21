@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, View, Button, Text } from 'react-native';
+import { MdEuroSymbol, MdDescription } from 'react-icons/md';
+import { ImAirplane } from 'react-icons/im';
 
 
 export default function AddExpense({ navigation }) {
@@ -34,24 +36,25 @@ export default function AddExpense({ navigation }) {
 
         //https://mcculloughwebservices.com/2016/09/23/handling-a-null-response-from-an-api/
         fetch("http://localhost:8080/" + (trip.trim().toLowerCase()) + "/expense", requestOptions)
-            .then(response => response.json())
-            // .then(response => response.text())
-            // .then(text =>
-            //     text.length ? JSON.parse(text) : setUserMessage("Trip closed. Not allowed to add more expenses."))
+            //.then(response => response.json())
+            .then(response => response.text())
+            .then(text =>
+                text.length ? JSON.parse(text) : setUserMessage("Trip closed. Not allowed to add more expenses."))
             // if (response == null) {
             //     setUserMessage("Trip closed. Not allowed to add more expenses.")
             //     //response.json()
             // } else {
             //     response.json()
-            //     //setUserMessage("Trip closed. Not allowed to add more expenses.")
-            // }
+            //setUserMessage("Trip closed. Not allowed to add more expenses.")
+            //}
             //})
             .then(data => {
                 if (data != null) {
                     console.log('Success:', data);
-                } else {
-                    setUserMessage("Trip closed. Not allowed to add more expenses.")
                 }
+                // else {
+                //     setUserMessage("Trip closed. Not allowed to add more expenses.")
+                // }
             })
             .catch((error) => {
                 console.error('Error:', error);

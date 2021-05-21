@@ -62,7 +62,7 @@ export default function Login({ navigation }) {
                     enablesReturnKeyAutomatically={true}
                 />
             </View>
-            <View style={{ width: "32%", margin: "2.5%", alignSelf: 'center' }}>
+            <View style={{ width: "30%", margin: "2.5%", alignSelf: 'center' }}>
                 <Text style={{ textAlign: 'center' }}
                 >{loginError}</Text>
                 <Button

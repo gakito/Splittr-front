@@ -39,7 +39,7 @@ export default function listTrip({ navigation }) {
         };
 
         {
-            fetch("http://localhost:8080/rio"  /*+ (trip.trim().toLowerCase()) */, requestOptions)
+            fetch("http://localhost:8080/" + (trip.trim().toLowerCase()), requestOptions)
                 .then(response => response.json())
                 .then((data) => {
                     if (data) {
@@ -82,7 +82,7 @@ export default function listTrip({ navigation }) {
             <View style={{
                 alignContent: 'center',
                 flexDirection: 'row',
-                width: "50%",
+                width: "40%",
                 justifyContent: 'space-around',
                 display: show,
                 backgroundColor: "#faf1e6",
@@ -120,14 +120,6 @@ export default function listTrip({ navigation }) {
                     )}
                 />
             </View>
-
-            <View style={styles.buttons}>
-                <Button
-                    onPress={closing}
-                    title="Close trip"
-                    color='#064420'
-                />
-            </View>
         </View>
     )
 }
@@ -157,10 +149,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         borderBottomWidth: 1,
         borderColor: "#064420",
-        fontSize: "1.7vw"
+        //fontSize: "1.7vw"
     },
     tableBody: {
-        fontSize: "1.4vw",
+        //fontSize: "1.4vw",
         fontWeight: '500'
     },
     tableLeft: {

@@ -4,8 +4,8 @@ import { createStackNavigator } from 'react-navigation-stack';
 import Login from './Login';
 import Menu from './Menu';
 import AddExpense from './AddExpense';
-import listTrip from './listTrip';
-import closeTrip from './closeTrip';
+import listTrip from './ListTrip';
+import closeTrip from './CloseTrip';
 
 /*Navigator page to change screens*/
 const navigator = (createStackNavigator(
