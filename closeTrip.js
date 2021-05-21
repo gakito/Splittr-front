@@ -1,13 +1,22 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, View, Button, Text, FlatList } from 'react-native';
 import { GiAirplaneArrival } from 'react-icons/gi';
-import { RFValue } from 'react-native-responsive-fontsize';
 
 
 export default function closeTrip({ navigation }) {
 
     /**
-     * 
+     * @param trip
+     * @param userMessage a string to inform the user if a trip was succesfully closed 
+     * @param costsAmilcar total expense by the user amilcar
+     * @param costsDavid total expense by the user david
+     * @param costsGreg total expense by the user greg
+     * @param total total expense of a trip
+     * @param showSummary hides or shows summary table component
+     * @param showDetails hides or shows details table component
+     * @param details array of details attributes
+     * @param maxList details of the highest expense of a trip
+     * @param minList details of the lowest exepense of a trip
      */
 
     const [trip, setTrip] = useState("");
@@ -22,14 +31,15 @@ export default function closeTrip({ navigation }) {
     const [maxList, setMaxList] = useState([]);
     const [minList, setMinList] = useState([]);
 
+    //function to close a trip
     function closing() {
-        console.log("function called");
 
         var requestOptions = {
             method: 'POST',
             redirect: 'follow'
         };
 
+        //this fetch returns a boolean. if true, the trip was closed. if false, trip may not exist
         fetch("http://localhost:8080/" + (trip.trim().toLowerCase()) + "/close", requestOptions)
             .then(response => response.text())
             .then(data => {
@@ -45,24 +55,26 @@ export default function closeTrip({ navigation }) {
             });
     }
 
+    //function to get a summary from a trip
     async function getSummary() {
-        console.log("summary function called");
-        console.log(total)
+
         var requestOptions = {
             method: 'GET',
             redirect: 'follow'
         };
 
+        //fetch returns a json.
         fetch("http://localhost:8080/" + (trip.trim().toLowerCase()) + "/summary", requestOptions)
             .then(response => response.json())
             .then(data => {
+                //conditional to hide or show the component where the table is located
                 if (data) {
                     setShowDetails("none");
                     setShowSummary("flex");
                 } else {
                     setShowSummary("none");
                 }
-                console.log(data)
+                //these if are important is if data.* doesn't exist, costs* still equals 0. otherwise, costs* would not be a number, making no sense on the table. 
                 if (data.amilcar) {
                     setCostsAmilcar(data.amilcar);
                 } if (data.david) {
@@ -77,6 +89,7 @@ export default function closeTrip({ navigation }) {
 
     }
 
+    //function to get details from a trip, like highest and lowest expense
     function getDetails() {
         var requestOptions = {
             method: 'GET',
@@ -86,38 +99,38 @@ export default function closeTrip({ navigation }) {
         fetch("http://localhost:8080/" + (trip.trim().toLowerCase()) + "/details", requestOptions)
             .then(response => response.json())
             .then(data => {
+                //same conditional to hide or show the component where details table is located. this and the preivious one can not exist simultaneously
                 if (data) {
                     setShowSummary("none");
                     setShowDetails("flex");
                 } else {
                     setShowDetails("none");
                 }
-                console.log(data)
-                console.log(data.max)
-                console.log(data.min)
+                //setting data to maxList and minList
                 setMaxList(data.max)
                 setMinList(data.min)
-                console.log(minList)
             })
     }
-    //https://stackoverflow.com/questions/1026069/how-do-i-make-the-first-letter-of-a-string-uppercase-in-javascript
+
+    //function got from https://stackoverflow.com/questions/1026069/how-do-i-make-the-first-letter-of-a-string-uppercase-in-javascript. it capitalizes the first letter of a string
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
     return (
-
         <View style={styles.container}>
             <View style={styles.inputView}>
                 <View style={styles.icon}>
                     <GiAirplaneArrival />
                 </View>
+                {/* setting trip */}
                 <TextInput style={styles.textInput}
                     onChangeText={setTrip}
                     placeholder="Trip label"
                 />
             </View>
             <View style={styles.buttons}>
+                {/* calling closing function */}
                 <Button
                     onPress={() => {
                         closing();
@@ -130,6 +143,7 @@ export default function closeTrip({ navigation }) {
                 <Text>{userMessage}</Text>
             </View>
             <View style={styles.buttons}>
+                {/* calling getSummary function */}
                 <Button
                     onPress={() => {
                         getSummary();
@@ -139,6 +153,7 @@ export default function closeTrip({ navigation }) {
                 />
             </View>
             <View style={styles.buttons}>
+                {/* calling getDetails function */}
                 <Button
                     onPress={() => {
                         getDetails();
@@ -148,6 +163,7 @@ export default function closeTrip({ navigation }) {
                 />
             </View>
 
+            {/* table to show a summary of a trip  */}
             <View style={{
                 alignContent: 'center',
                 flexDirection: 'row',
@@ -171,6 +187,9 @@ export default function closeTrip({ navigation }) {
                     <Text>{costsDavid}</Text>
                     <Text>{costsGreg}</Text>
                 </View>
+
+                {/* the following view is made a calculation of the arithmetic average of the total costs */}
+                {/* .toFixed(x) limits number the decimal places at x  */}
                 <View style={{ alignItems: 'center' }}>
                     <Text style={styles.tableHeader}>Amount to pay (€) </Text>
                     <Text>{(total / 3 - costsAmilcar).toFixed(2)}</Text>

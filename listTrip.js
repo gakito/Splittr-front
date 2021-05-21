@@ -37,7 +37,7 @@ export default function listTrip({ navigation }) {
 
     }
 
-    // function got from https://stackoverflow.com/questions/1026069/how-do-i-make-the-first-letter-of-a-string-uppercase-in-javascript. it capitalizes the first letter of a string
+    //function got from https://stackoverflow.com/questions/1026069/how-do-i-make-the-first-letter-of-a-string-uppercase-in-javascript. it capitalizes the first letter of a string
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
