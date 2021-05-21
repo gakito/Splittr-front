@@ -1,6 +1,7 @@
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
+//importing main functions from .js files
 import Login from './Login';
 import Menu from './Menu';
 import AddExpense from './AddExpense';

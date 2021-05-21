@@ -5,11 +5,14 @@ import { FiUser, FiLock } from 'react-icons/fi'
 
 export default function Login({ navigation }) {
 
+    /**
+     * @param username username inserted by the user
+     * @param password  password inserted by the user
+     * @param loginError a simple string to be shown only if a login error happens
+     */
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
     const [loginError, setLoginError] = useState("");
-
-    var auth;
 
     function login() {
 
@@ -20,15 +23,19 @@ export default function Login({ navigation }) {
             redirect: 'follow'
         };
 
+        //this gets a token from the server if the username and password are correct
         fetch("http://localhost:8080/login?username=" + username + "&password=" + password, requestOptions)
             .then(response => {
+                //if it's not correct, return a simple message to the user
                 if (!response.ok) {
                     setLoginError("Invalid user or password. Please try again.")
                 } else {
                     response.text()
+                        //the token got from the response is saved on sessionstorage, so it can be sent back to the server when is needed. the same is done with the username inserted.
                         .then(token => sessionStorage.setItem("token", token))
                         .then(() => sessionStorage.setItem("user", username))
                         .catch(error => console.log('error', error));
+                    //command to go the next screen. this is here inside the fetch, so it only happens when the response is valid and user and password are correct
                     navigation.navigate("Two")
                 }
             })
@@ -36,8 +43,8 @@ export default function Login({ navigation }) {
     }
 
     return (
-
         <View style={styles.container}>
+            {/*this view is inserted so icon and Textinput can be side by side. This is done on other pages as well*/}
             <View style={styles.inputView}>
                 <View style={styles.icon}>
                     <FiUser
@@ -57,14 +64,13 @@ export default function Login({ navigation }) {
                 </View>
                 <TextInput style={styles.textInput}
                     placeholder="password"
+                    //the following atribute hides characters on the screen
                     secureTextEntry={true}
                     onChangeText={setPassword}
-                    enablesReturnKeyAutomatically={true}
                 />
             </View>
-            <View style={{ width: "30%", margin: "2.5%", alignSelf: 'center' }}>
-                <Text style={{ textAlign: 'center' }}
-                >{loginError}</Text>
+            <View style={styles.buttons}>
+                <Text style={{ textAlign: 'center', paddingBottom: '1%' }}>{loginError}</Text>
                 <Button
                     onPress={() => {
                         login();
@@ -87,7 +93,7 @@ const styles = StyleSheet.create({
         height: 40,
         borderColor: '#064420',
         borderWidth: 1,
-        width: "30%",
+        width: "45%",
         padding: "4px",
         backgroundColor: "#fdfaf6",
     },
@@ -96,6 +102,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         margin: "5px"
+    },
+    buttons: {
+        width: "45%",
+        margin: "2.5%",
+        alignSelf: "center"
     },
     icon: {
         borderWidth: 1,

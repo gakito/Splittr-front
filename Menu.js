@@ -1,9 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, Button } from 'react-native';
 
+//a simple menu page, intentioning an easy map of the app with three pages 
+
 export default function Menu({ navigation }) {
 
     return (
+        // each onPress leads to a different page/js file
         <View style={styles.container}>
             <View style={styles.buttons}>
                 <Button
@@ -38,7 +41,7 @@ const styles = StyleSheet.create({
     },
 
     buttons: {
-        width: "30%",
-        margin: "1%"
+        width: "45%",
+        margin: "1.25%"
     }
 });

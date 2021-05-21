@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "front",
-    "slug": "front",
+    "name": "Splittr",
+    "slug": "splittr",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -27,6 +27,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "Front-end made as the assignment for 'Mobile Development', 'Cloud Based Web App' and 'Algorithms and Constructors' modules.",
+    "githubUrl": "https://github.com/gakito/front"
   }
 }
