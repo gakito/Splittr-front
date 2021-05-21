@@ -139,7 +139,7 @@ export default function closeTrip({ navigation }) {
                     color='#064420'
                 />
             </View>
-            <View>
+            <View style={{ alignItems: 'center' }}>
                 <Text>{userMessage}</Text>
             </View>
             <View style={styles.buttons}>

@@ -99,7 +99,7 @@ export default function AddExpense({ navigation }) {
                 />
             </View>
             {/* message shown to the user if trip is closed */}
-            <Text>{userMessage}</Text>
+            <Text style={{ alignSelf: 'center' }}>{userMessage}</Text>
         </View>
     );
 }
